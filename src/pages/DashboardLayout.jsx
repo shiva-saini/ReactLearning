@@ -4,24 +4,29 @@ import {BigSidebar, SmallSidebar, Navbar} from '../components/index.js'
 import Wrapper from '../assets/wrappers/Dashboard.js'
 import { createContext,useState,useContext } from 'react';
 const DashboardContext = createContext();
-const DashboardLayout = () => {
-  const [user,setUser] = useState({name:'John Doe'});
-  const [showSideBar,setShowSidebar] = useState(true); 
-  const [isDarkTheme,setIsDarkTheme] = useState(false);  
+import { checkDefaultTheme } from '../App.jsx';
+
+const DashboardLayout = ({isDarkThemeEnabled}) => {
+  const [user,setUser] = useState({name:'Shiva Saini'});
+  const [showSidebar,setShowSidebar] = useState(false); 
+  const [isDarkTheme,setIsDarkTheme] = useState(checkDefaultTheme());  
   
   const logoutUser = () => {
     setUser(null);
   }
   const toggleDarkTheme = () => {
-    setIsDarkTheme(!isDarkTheme);
+    const newDarkTheme = !isDarkTheme;
+    setIsDarkTheme(newDarkTheme);
+    document.body.classList.toggle('dark-theme', newDarkTheme);
+    localStorage.setItem('isDarkTheme', newDarkTheme);
   }
 
   const toggleSidebar = () => {
-    setShowSidebar(!showSideBar);
+    setShowSidebar(!showSidebar);
   }
 
   return (
-    <DashboardContext.Provider value={{user,showSideBar,isDarkTheme,toggleSidebar,toggleDarkTheme}}>
+    <DashboardContext.Provider value={{user,showSidebar,isDarkTheme,toggleSidebar,toggleDarkTheme}}>
     <Wrapper>
       <main className="dashboard">
         <BigSidebar />
